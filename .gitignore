@@ -1,10 +1,9 @@
-.DS_Store
+# third party modules
 node_modules
+.DS_Store
+npm-debug.log
 
-# Editor directories and files
+#idea
 .idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+*.iml
+
