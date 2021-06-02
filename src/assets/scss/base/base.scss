@@ -24,3 +24,12 @@ a {
   text-decoration: none;
   color: $color-text;
 }
+
+.content-wrapper {
+  display: flex;
+}
+
+.right_panel {
+  width: auto;
+  height: 100vh;
+}

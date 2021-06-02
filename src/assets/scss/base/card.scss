@@ -1,5 +1,6 @@
 .scene {
- height: 100vh;
+  height: 100vh;
+  width: 1071px;
 }
 
 .card {
@@ -8,7 +9,7 @@
     padding: 15px;
     border-radius: 5px;
     background: #2c3e50;
-    height: calc(100% - 225px);
+    height: 100%;
   }
 
   &-slot {
@@ -56,9 +57,9 @@
 
 .deck_card {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: nowrap;
-  width: 100%;
-  height: auto;
-  overflow-x: auto;
+  width: auto;
+  height: 100%;
+  overflow-y: auto;
 }
