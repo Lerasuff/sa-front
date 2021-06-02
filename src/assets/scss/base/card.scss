@@ -1,0 +1,64 @@
+.scene {
+ height: 100vh;
+}
+
+.card {
+  &-scene {
+    display: block;
+    padding: 15px;
+    border-radius: 5px;
+    background: #2c3e50;
+    height: calc(100% - 225px);
+  }
+
+  &-slot {
+    width: 100px;
+    height: 150px;
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+  }
+
+  &-container {
+    width: 100px;
+    height: 150px;
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12),
+    0 1px 1px rgba(0, 0, 0, 0.24);
+  }
+
+  &__info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.battlefield {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.deck_card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  height: auto;
+  overflow-x: auto;
+}

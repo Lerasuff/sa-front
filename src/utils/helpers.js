@@ -1,3 +1,9 @@
+export const cardStatus = {
+    deck: 'deck',
+    battle: 'battle',
+    deleted: 'deleted'
+}
+
 export const applyDrag = (arr, dragResult) => {
     const { removedIndex, addedIndex, payload } = dragResult
     if (removedIndex === null && addedIndex === null) return arr
@@ -22,4 +28,24 @@ export const generateItems = (count, creator) => {
         result.push(creator(i))
     }
     return result
+}
+
+export const getRandomCharacteristic = max => {
+    return String(Math.floor(Math.random() * max));
+}
+
+export const removeCard = (arr, card) => {
+    let cardForDel = arr.indexOf(card);
+    if (cardForDel >= 0) {
+        if (card.props.status === cardStatus.deck) {
+            arr.splice(cardForDel,1);
+        } else {
+            delete arr[cardForDel];
+        }
+    }
+    return arr;
+}
+
+export const calcCardIndex = (line, pos, offset) => {
+    return (line-1) * offset + (pos-1);
 }
