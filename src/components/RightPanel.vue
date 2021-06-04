@@ -1,6 +1,8 @@
 <template>
   <div class="right_panel">
-    <Deck/>
+    <Deck
+        @updated="$emit('updated')"
+    />
   </div>
 </template>
 

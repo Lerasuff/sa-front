@@ -1,7 +1,11 @@
 <template>
   <div class="content-wrapper">
-    <PlayingField/>
-    <RightPanel/>
+    <PlayingField ref="PlayingField"
+                  @updated="updatePage"
+    />
+    <RightPanel
+        @updated="updatePage"
+    />
   </div>
 </template>
 
@@ -14,6 +18,11 @@ import RightPanel from "@/components/RightPanel.vue";
   components: {
     RightPanel,
     PlayingField,
+  },
+  methods: {
+    updatePage() {
+      this.$refs['PlayingField'].$forceUpdate();
+    }
   }
 })
 export default class Home extends Vue {}

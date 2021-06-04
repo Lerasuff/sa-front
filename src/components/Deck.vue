@@ -19,7 +19,6 @@ export default {
   mixins: [Draggable],
   data() {
     return {
-      classDeck: 'deck_card',
     }
   }
 }

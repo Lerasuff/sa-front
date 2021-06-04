@@ -1,5 +1,11 @@
 <script>
-import {calcCardIndex, cardStatus, generateItems, getRandomCharacteristic, removeCard} from "@/utils/helpers";
+import {
+  calcCardIndex,
+  cardStatus,
+  generateItems,
+  getRandomCharacteristic,
+  removeCard
+} from "@/utils/helpers";
 import Card from "@/components/Card";
 
 const countCardInLine = 8;
@@ -28,6 +34,8 @@ let deck = generateItems(32, i => ({
   image: require(`@/assets/images/cards/${cardImages[i % cardImages.length]}`),
 }))
 
+let meCombat = [];
+
 export default {
   name: "Draggable",
   components: {Card},
@@ -35,11 +43,12 @@ export default {
     return {
       countCardInLine,
       deck,
+      meCombat,
       cardStatus,
       coords: {},
       currentCard: {},
       classSlot: 'card-slot',
-      meCombat: [],
+      classDeck: 'deck_card',
       enemyCombat: []
     }
   },
@@ -117,8 +126,8 @@ export default {
 
         if (classElem.indexOf(this.classDeck) < 0) {
           let arrSlot = classElem.split('_');
-          pos = arrSlot[1];
-          line = arrSlot[2];
+          line = arrSlot[1];
+          pos = arrSlot[2];
         }
         this.onDrop(line, pos);
         this.currentCard.elem.style.removeProperty('display');
@@ -137,8 +146,6 @@ export default {
       let elem = document.elementFromPoint(e.clientX, e.clientY);
       this.currentCard.image.hidden = false;
 
-      console.log('elem', elem);
-
       return this.findSlot(elem);
     },
     findSlot(elem) {
@@ -153,12 +160,16 @@ export default {
       let index, fromCard = [], toCard = [];
       const currentCard = this.currentCard.item;
 
+      if (!line && !pos && currentCard.props.status === cardStatus.deck) {
+        return;
+      }
+
       switch (currentCard.props.status) {
         case cardStatus.deck:
           fromCard = deck;
           break;
         case cardStatus.battle:
-          fromCard = this.meCombat;
+          fromCard = meCombat;
           break;
         default:
           return;
@@ -169,19 +180,20 @@ export default {
       if (line && pos) {
         index = calcCardIndex(line, pos, countCardInLine);
         currentCard.props.status = cardStatus.battle;
-        toCard = this.meCombat;
+        toCard = meCombat;
 
         if (toCard[index]) {
           this.addDeck(toCard[index]);
         }
 
         toCard[index] = {};
-        Object.assign(toCard[index], currentCard);
+        toCard[index] = currentCard;
+
       } else {
         this.addDeck(currentCard);
       }
 
-      this.$forceUpdate();
+      this.$emit('updated');
     },
     addDeck(card) {
       card.props.status = cardStatus.deck;
