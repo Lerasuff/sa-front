@@ -13,6 +13,11 @@ $fs-mini: 13px;
 
 //colors
 $white: #ffffff;
-$color-main: #2097A8;
+$color-main: #e1dfff;
 $color-text: #222222;
+$color-error: #f56c6c;
 $color-card-background: #d4d4d4;
+$color-active: #5e5b89; //#6056f1;
+$color-active-lighten:  lighten($color-active, 15%);
+$color-active-darken: darken($color-active, 6%);
+$color-btn-disabled: #c1d7de;

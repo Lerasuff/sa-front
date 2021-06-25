@@ -1,20 +1,23 @@
 <template>
   <div class="scene">
     <div class="cards card-scene"
-         @dragover.prevent
+         v-for="field in fields"
+         :key="field.id"
+         :class="field.classBattleField"
          @dragenter.prevent
     >
-      <div class="my-field battlefield"
+      <div class="battlefield"
            v-for="lineCard in countLine"
            :key="lineCard"
       >
         <div class="field-container"
             v-for="posCard in countCardInLine"
             :key="posCard"
-            :class="[classSlot,`${'slot_' + lineCard + '_' + posCard}`]"
+            :class="field.classBattleField === classField.your ? [classSlot,`slot_${lineCard + '_' + posCard}`] : ''"
+             draggable="false"
         >
-          <Card v-if="!!meCombat[calcCardIndex(lineCard,posCard,countCardInLine)]"
-                :card="meCombat[calcCardIndex(lineCard,posCard,countCardInLine)]"
+          <Card v-if="!!field.arrayCard[lineCard][posCard]"
+                :card="field.arrayCard[lineCard][posCard]"
                 @ondragstart="onDragStart"
                 @ondrag="onDrag"
                 @ondragend="onDragEnd"
@@ -25,19 +28,46 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 
-import Draggable from "@/mixins/Draggable";
+import Draggable from "@/mixins/Draggable.vue";
+import Vue from 'vue'
+import {CardModel} from "@/contracts/CardModel.ts";
 
-const countLine = 2;
+interface BattleFields {
+  classBattleField: number;
+  arrayCard: CardModel[][];
+}
 
-export default {
+interface Data {
+  countLine: number;
+}
+
+interface Computed {
+  fields(): BattleFields[];
+}
+
+export default Vue.extend<unknown,unknown,Computed,unknown>({
   name: "PlayingField",
   mixins: [Draggable],
-  data() {
+  data(): Data {
     return {
-      countLine
+      countLine: 2,
+    };
+  },
+  computed: {
+    fields() {
+      return [
+        {
+          classBattleField: this.classField.enemy,
+          arrayCard: this.enemyCombat
+        },
+        {
+          classBattleField: this.classField.your,
+          arrayCard: this.meCombat
+        }
+      ]
     }
   }
-}
+})
 </script>

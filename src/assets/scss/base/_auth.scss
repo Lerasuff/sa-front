@@ -1,0 +1,28 @@
+.auth {
+  display: flex;
+  width: 400px;
+  height: 300px;
+  padding: 30px 40px;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 8px 0 #000;
+  background-color: $white;
+  box-sizing: border-box;
+  position: relative;
+  border-radius: 10px;
+
+  &-wrapper {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-color: $color-main;
+  }
+
+  &__title {
+    margin: 12px 0 20px;
+    font-size: 18px;
+    letter-spacing: 1px;
+    font-family: $ft-main;
+  }
+}

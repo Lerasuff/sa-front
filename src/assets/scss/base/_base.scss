@@ -38,3 +38,11 @@ a {
   width: 20%;
   height: 100%;
 }
+
+.active {
+  display: flex;
+  height: calc(20% - 30px);
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 5px;
+}

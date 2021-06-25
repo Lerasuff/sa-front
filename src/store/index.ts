@@ -1,15 +1,13 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+import Vuex, {StoreOptions} from 'vuex'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
+
+const options: StoreOptions<Record<string, unknown>> = {
+  strict: process.env.NODE_ENV !== 'production',
+};
+
+const store = new Vuex.Store<Record<string, unknown>>(options);
+
+export default store;

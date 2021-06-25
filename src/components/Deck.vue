@@ -10,16 +10,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 
-import Draggable from "@/mixins/Draggable";
+import Draggable from "@/mixins/Draggable.vue";
+import Vue from 'vue'
 
-export default {
+export default Vue.extend({
   name: "Deck",
-  mixins: [Draggable],
-  data() {
-    return {
-    }
-  }
-}
+  mixins: [Draggable]
+})
 </script>

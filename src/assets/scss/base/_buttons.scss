@@ -1,0 +1,31 @@
+.main-btn {
+  display: inline-block;
+  justify-content: flex-end;
+  margin: 15px 5px;
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  background: $color-active;
+  color: $white;
+  font-family: $ft-main;
+  font-size: $fs-little;
+  text-transform: uppercase;
+  padding: 11px 20px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+
+  &:hover {
+    background: $color-active-lighten;
+  }
+
+  &--disabled {
+    cursor: default;
+    background: $color-btn-disabled;
+
+    &:hover,
+    &:active {
+      background: $color-btn-disabled;
+    }
+  }
+}
