@@ -1,8 +1,8 @@
 <template>
   <div class="content-wrapper">
-<!--    <PlayingField ref="PlayingField"
+    <PlayingField ref="PlayingField"
                   @updated="updatePage"
-    />-->
+    />
     <RightPanel
         @updated="updatePage"
     />
@@ -13,10 +13,12 @@
 import { Component, Vue } from 'vue-property-decorator';
 import PlayingField from "@/components/PlayingField.vue";
 import RightPanel from "@/components/RightPanel.vue";
+import {Connection} from "@/store/modules/socket.ts";
 import {ConnectionInstance} from "@/store/modules/board.ts";
 import authModule from "@/store/modules/auth.module";
+import boardStateModule from "@/store/modules/board.modules";
 
-let connection: (ConnectionInstance | undefined) = undefined;
+export let connection: ConnectionInstance;
 
 @Component({
   components: {
@@ -28,9 +30,14 @@ let connection: (ConnectionInstance | undefined) = undefined;
       (this.$refs['PlayingField'] as Vue).$forceUpdate();
     },
   },
-  mounted() {
-    connection = new ConnectionInstance(authModule.getters.token);
-    connection.connect('testdeck');
+  created() {
+    if (authModule.getters.token) {
+      connection = new ConnectionInstance(boardStateModule, authModule.getters.token);
+      connection.connect('testdeck');
+    }
+  },
+  destroyed() {
+    (connection as Connection).disconnect();
   }
 })
 export default class Board extends Vue {}

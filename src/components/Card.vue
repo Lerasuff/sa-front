@@ -7,7 +7,7 @@
        @dragend="$emit('ondragend',$event)"
   >
     <img class="card__img"
-         :src="card.skin"
+         :src="require(`@/assets/images/cards/${cardImages[card.num % cardImages.length]}`)"
          draggable="false"
     />
     <div class="card__info">
@@ -21,14 +21,34 @@
 
 <script lang="ts">
 import Vue, {PropType} from 'vue'
-import {CardModel} from "@/contracts/CardModel.ts";
+import {CardModelDrag} from "@/contracts/CardModel.ts";
+
+const cardImages = [
+  '01.png',
+  '02.png',
+  '03.png',
+  '04.png',
+  '05.png',
+  '06.png',
+  '07.png',
+  '08.png',
+]
+
+interface Data {
+  cardImages: string[];
+}
 
 export default Vue.extend({
   name: "Card",
   props: {
     card: {
-      type: Object as PropType<CardModel>,
+      type: Object as PropType<CardModelDrag>,
       required: true
+    }
+  },
+  data(): Data {
+    return {
+      cardImages
     }
   }
 })

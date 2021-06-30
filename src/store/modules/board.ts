@@ -1,54 +1,66 @@
 import {Connection} from "@/store/modules/socket.ts";
-import {StateModel} from "@/contracts/StateModel";
-import {StepModel} from "@/contracts/StepModel";
+import {StateModel} from "@/contracts/StateModel.ts";
+import {StepModel} from "@/contracts/StepModel.ts";
+import Vue from 'vue';
+import {BoardModules} from "@/store/modules/board.modules.ts"
+import { ModuleInstance} from "vuexok";
 
 export class ConnectionInstance extends Connection {
+  scene: ModuleInstance<BoardModules>;
+
+  constructor(scene: ModuleInstance<BoardModules>, token: string) {
+    super(token);
+    this.scene = scene;
+  }
 
   error(e: unknown): void {
-    //this.scene.header.text = `[${this.scene.player.name}]: ${e}`;
+    Vue.$toast.error(`${e}`);
   }
   wait(): void {
-    //this.scene.header.text = `[${this.scene.player.name}]: WAIT`;
+    Vue.$toast.info(`WAIT`);
   }
   ready(board: StateModel): void {
-    //this.scene.header.text = `[${this.scene.player.name}]: READY`;
-    //this.scene.playerBoard = board.playerBoard;
-    //this.scene.enemyBoard = board.enemyBoard;
+    Vue.$toast.success(`READY`);
 
-    //this.scene.drawBattlefield();
+    board.enemyBoard.cards = board.enemyBoard.cards.slice().reverse();
 
-    //const self = this;
- /*   setTimeout(() => {
-      if (!self.scene.gameFinished) {
+    this.scene.mutations.SET_DECK({cards: board.deck, drag: true});
+    this.scene.mutations.SET_BOARD({name: 'playerBoard', cards: board.playerBoard, drag: true});
+    this.scene.mutations.SET_BOARD({name: 'enemyBoard', cards: board.enemyBoard, drag: false});
+
+    setTimeout(() => {
+      if (!this.scene.getters.gameFinished) {
         for (let i = 0; i < board.playerBoard.lines; i++) {
           for (let j = 0; j < board.playerBoard.columns; j++) {
             if (null === board.playerBoard.cards[i][j]) {
               const card = board.deck.pop();
-              self.sendBoardUpdate(i, j, card.num);
+              if (card)
+                this.sendBoardUpdate(i, j, card.num);
             }
           }
         }
-        self.sendBoardReady();
+        this.sendBoardReady();
       }
-    }, 10000);*/
+    }, 10000);
   }
   timeSync(timeLeft: number): void {
-   // this.scene.header.text = `[${this.scene.player.name}]: TIME LEFT: {timeLeft}`;
+    //Vue.$toast.info(`TIME LEFT: ${timeLeft}`);
   }
   steps(steps: StepModel[]): void {
-    //this.scene.header.text = `[${this.scene.player.name}]: REPLY STEPS`;
+    //Vue.$toast.info('REPLY STEPS');
   }
   complete(winnerId: string): void {
+    Vue.$toast.success(`WINNER: ${winnerId}`);
     //this.scene.gameFinished = true;
-    //this.scene.header.text = `[${this.scene.player.name}]: WINNER: ${winnerId}`;
+    this.scene.mutations.SET_FINISH(true);
     this.disconnect();
   }
 
   connected(): void {
-    console.log('connected');
+    Vue.$toast.success('Connected');
   }
 
   disconnected(): void {
-    console.log('disconnected');
+    Vue.$toast.info('Disconnected');
   }
 }

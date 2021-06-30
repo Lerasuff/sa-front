@@ -2,8 +2,8 @@ import jwt_decode from "jwt-decode";
 import { configs } from "@/const/config.ts";
 import router from "@/router/index.ts";
 import {LOGIN, routeNames} from "@/router/const";
-import {Actions, Mutations} from "@/store/consts";
-import requestModule from "@/store/modules/request.module";
+import {Actions, Mutations, urls} from "@/store/consts";
+import requestModule, {wrapUrl} from "@/store/modules/request.module";
 import {createModule} from "vuexok";
 import store from "@/store";
 
@@ -51,23 +51,25 @@ const authModule = createModule(store, 'auth', {
     },
     actions: {
         [Actions.A_AUTH]: (ctx,data) => {
-            return requestModule.actions.HTTP_POST(
+            const params = {
+                username: data.username,
+                password: data.password,
+                scope: 'read write',
+                client_id: 'sa',
+                grant_type: 'password'
+            };
+            return requestModule.actions.HTTP_REQUEST(
                 {
                     mutation: false,
                     method: Actions.A_AUTH,
                     options: {
+                        method: 'POST',
                         baseURL: configs.ports.ssoApp,
                         auth: {
                             username: 'sa',
                             password: 'secret'
                         },
-                    },
-                    params: {
-                        username: data.username,
-                        password: data.password,
-                        scope: 'read write',
-                        client_id: 'sa',
-                        grant_type: 'password'
+                        url: wrapUrl(urls[Actions.A_AUTH], params)
                     }
                 })
                 .then((response) => {

@@ -2,16 +2,16 @@ import { BoardUpdateModel } from '@/contracts/BoardUpdateModel.ts';
 import {AppMessage} from "@/contracts/AppMessage.ts";
 import { StepModel } from "@/contracts/StepModel";
 import { StateModel } from '@/contracts/StateModel.ts';
-import {io, Socket} from "socket.io-client";
+import io from 'socket.io-client';
 import {CONNECTION_TIMEOUT, GAME_SERVER} from "@/const/config";
 
 export abstract class Connection {
-    socket: Socket;
+    socket: SocketIOClient.Socket;
     accessToken: string;
 
     constructor(accessToken: string) {
         this.accessToken = accessToken;
-        this.socket = io(GAME_SERVER, {path:'/game/socket.io',autoConnect: false, reconnection: true, query: { token: this.accessToken }, timeout: CONNECTION_TIMEOUT });
+        this.socket = io(GAME_SERVER, { autoConnect: false, reconnection: true, query: { token: this.accessToken }, timeout: CONNECTION_TIMEOUT });
         this.socket
             .on('connect', () => {
                 console.log('Connected');

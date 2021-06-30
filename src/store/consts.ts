@@ -22,7 +22,11 @@ export enum Mutations {
   SET_AUTH = "SET_AUTH",
   SET_LOGOUT = 'SET_LOGOUT',
   SET_HTTP_ERROR = 'SET_HTTP_ERROR',
-  SET_USERS = 'SET_USERS'
+  SET_USERS = 'SET_USERS',
+  SET_BOARD = 'SET_BOARD',
+  SET_DECK = 'SET_DECK',
+  SET_UPDATE = 'SET_UPDATE',
+  SET_FINISH = 'SET_FINISH',
 }
 
 export enum Getters {

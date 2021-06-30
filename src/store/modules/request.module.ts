@@ -7,6 +7,7 @@ import {StatusCodes} from "http-status-codes";
 import {createModule} from "vuexok";
 import store from "@/store/index.ts"
 import authModule from "@/store/modules/auth.module.ts";
+import {ErrorMessage} from "@/const/translationOfErrors";
 
 enum Methods {
   POST = 'POST',
@@ -16,12 +17,9 @@ enum Methods {
 }
 
 interface Errors {
-  error: string,
-  errorDescription: string
-}
-
-interface Unidentifiable {
-  prop?: never
+  error?: string;
+  error_description?: string;
+  message?: string;
 }
 
 class RequestState {
@@ -30,6 +28,7 @@ class RequestState {
   };
   loading: {[key: string]: string} | Record<string, never> = {};
   loadingRequest: {[key: string]: string} | Record<string, never> = {};
+  errors: Record<string, unknown> = {};
   errorsQueue: Errors[] = [];
 }
 
@@ -37,7 +36,31 @@ const api = axios.create({
   baseURL: BASE_URL,
 })
 
-export const wrapUrl = (url: string | undefined, params: Unidentifiable | undefined): string => {
+const notificationErrors = <T extends Errors>(error: T, status: number | undefined): void => {
+  if (!error) return;
+
+  const isMessage: string | undefined = Object.keys(error).find(key => key === 'message');
+  let message: string | undefined;
+
+  if (isMessage) {
+    message = error.message;
+  } else {
+    message = error.error_description;
+  }
+
+  if (!message) return;
+
+  if (ErrorMessage[message])
+    message = ErrorMessage[message];
+
+  if (status === StatusCodes.INTERNAL_SERVER_ERROR) {
+    Vue.$toast.error(message);
+  } else {
+    Vue.$toast.warning(message);
+  }
+}
+
+export const wrapUrl = (url: string | undefined, params: Record<string, any> | undefined): string => {
   if (!url) {
     console.log('ERROR URL', url, params);
     return '';
@@ -52,7 +75,7 @@ export const wrapUrl = (url: string | undefined, params: Unidentifiable | undefi
   return encodeURI(path);
 };
 
-const convertSearchToString = (searchParams: Unidentifiable): string => {
+const convertSearchToString = (searchParams: Record<string, any>): string => {
   const searchKeys: string[] = Object.keys(searchParams).filter(key => searchParams[key]);
   return searchKeys.map(searchKey => {
     const isNotString: boolean = typeof searchParams[searchKey] !== 'string'
@@ -85,30 +108,31 @@ const requestModule = createModule(store, 'request', {
       Vue.set(state.loading, name, value);
       Vue.set(state.loadingRequest, name, data);
     },
-    [Mutations.SET_HTTP_ERROR]: (state, data: Errors) => {
-      //Vue.set(state.errors, data.name, data);
+    [Mutations.SET_HTTP_ERROR]: (state, data) => {
+      Vue.set(state.errors, data.name, data.data.errors);
       state.errorsQueue.push(data);
+      notificationErrors(data.data, data.status);
       console.error(Mutations.SET_HTTP_ERROR, data);
     }
   },
   actions: {
-    [Actions.HTTP_CHECK_TOKEN]: async ({rootGetters}, { method, mutation, options }) => {
+    [Actions.HTTP_CHECK_TOKEN]: async (ctx, { method, mutation, options }) => {
       if (!options.headers) {
         options.headers = {};
       }
 
-      if (!rootGetters.token) {
+      if (!authModule.getters.token) {
         await authModule.actions.A_LOGOUT();
-        return Promise.reject(false)
+        return Promise.reject(false);
       }
-      const exp = (rootGetters.user.exp || undefined)
-      const now = new Date().getTime() / 1000
+      const exp = authModule.getters.user ? authModule.getters.user.exp : undefined;
+      const now = new Date().getTime() / 1000;
       if (exp && now > exp) {
         await authModule.actions.A_LOGOUT();
-        return Promise.reject(false)
+        return Promise.reject(false);
       }
 
-      options.headers.Authorization = rootGetters.token;
+      options.headers.Authorization = authModule.getters.token;
 
       return requestModule.actions.HTTP_REQUEST({method, mutation, options});
     },
@@ -165,12 +189,13 @@ const requestModule = createModule(store, 'request', {
             requestModule.mutations.SET_HTTP_ERROR({
               name: method,
               data: response.data,
+              status: response.status,
             });
             break;
         }
         return Promise.reject(response.data);
       } else {
-        requestModule.mutations.SET_HTTP_ERROR({name: method, data: req});
+        requestModule.mutations.SET_HTTP_ERROR({name: method, data: req, status: undefined});
         return Promise.reject(req);
       }
     },
@@ -193,7 +218,7 @@ const requestModule = createModule(store, 'request', {
         url: wrapUrl(urls[method], params),
         data
       };
-      return requestModule.actions.HTTP_REQUEST({method, mutation, options: opts});
+      return requestModule.actions.HTTP_CHECK_TOKEN({method, mutation, options: opts});
     },
     [Actions.HTTP_PUT]: (ctx, {method, mutation, params, data}) => {
       const options = {

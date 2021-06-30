@@ -58,13 +58,7 @@ export default Vue.extend({
       A_AUTH(this.user)
           .then(() => {
             this.$router.push('/')
-          })
-          .catch((rej) => {
-            let error: string = rej.error_description;
-            if (error === 'Bad credentials')
-              error = 'Неверный логин или пароль';
-            this.$toast.error(error);
-          })
+          });
     }
   }
 })

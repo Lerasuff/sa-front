@@ -1,10 +1,8 @@
 <script lang="ts">
-import {
-  removeCard
-} from "@/utils/helpers";
 import Card from "@/components/Card.vue";
 import Vue from 'vue'
-import {CardModel} from "@/contracts/CardModel";
+import {CardModel} from "@/contracts/CardModel.ts";
+import scene from "@/views/Board.vue";
 
 interface Method {
   onDrag(
@@ -42,7 +40,6 @@ interface DragCard {
   shiftY?: number;
   lineRight?: number;
   lineBottom?: number;
-
 }
 
 interface Data {
@@ -62,7 +59,7 @@ export default Vue.extend({
       coords: null,
       currentCard: {},
       classSlot: 'card-slot',
-      classDeck: 'deck_card'
+      classDeck: 'deck_card',
     }
   },
   methods: {

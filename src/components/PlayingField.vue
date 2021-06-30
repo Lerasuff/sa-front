@@ -3,21 +3,21 @@
     <div class="cards card-scene"
          v-for="field in fields"
          :key="field.id"
-         :class="field.classBattleField"
+         :class="field.name"
          @dragenter.prevent
     >
       <div class="battlefield"
-           v-for="lineCard in countLine"
+           v-for="lineCard in field.board.lines"
            :key="lineCard"
       >
         <div class="field-container"
-            v-for="posCard in countCardInLine"
+            v-for="posCard in field.board.columns"
             :key="posCard"
-            :class="field.classBattleField === classField.your ? [classSlot,`slot_${lineCard + '_' + posCard}`] : ''"
+            :class="field.name === 'player' ? [classSlot,`slot_${lineCard + '_' + posCard}`] : ''"
              draggable="false"
         >
-          <Card v-if="!!field.arrayCard[lineCard][posCard]"
-                :card="field.arrayCard[lineCard][posCard]"
+          <Card v-if="!!field.board.cards[lineCard-1][posCard-1]"
+                :card="field.board.cards[lineCard-1][posCard-1]"
                 @ondragstart="onDragStart"
                 @ondrag="onDrag"
                 @ondragend="onDragEnd"
@@ -31,40 +31,28 @@
 <script lang="ts">
 
 import Draggable from "@/mixins/Draggable.vue";
-import Vue from 'vue'
-import {CardModel} from "@/contracts/CardModel.ts";
+import Vue from 'vue';
+import {connection} from "@/views/Board.vue";
+import {BoardModelDrag} from "@/contracts/BoardModel";
 
 interface BattleFields {
-  classBattleField: number;
-  arrayCard: CardModel[][];
+  name: string;
+  board: BoardModelDrag;
 }
 
-interface Data {
-  countLine: number;
-}
-
-interface Computed {
-  fields(): BattleFields[];
-}
-
-export default Vue.extend<unknown,unknown,Computed,unknown>({
+export default Vue.extend({
   name: "PlayingField",
   mixins: [Draggable],
-  data(): Data {
-    return {
-      countLine: 2,
-    };
-  },
   computed: {
-    fields() {
+    fields(): BattleFields[] {
       return [
         {
-          classBattleField: this.classField.enemy,
-          arrayCard: this.enemyCombat
+          name: 'enemy',
+          board: connection.scene.getters.enemyBoard,
         },
         {
-          classBattleField: this.classField.your,
-          arrayCard: this.meCombat
+          name: 'player',
+          board: connection.scene.getters.playerBoard,
         }
       ]
     }

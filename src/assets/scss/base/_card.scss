@@ -1,6 +1,7 @@
 .scene {
   height: 100%;
   width: 80%;
+  min-width: 1000px;
   border-radius: 5px;
   background: #2c3e50;
   display: flex;
@@ -46,6 +47,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
+  user-select: none;
 }
 
 .deck_card {

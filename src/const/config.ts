@@ -11,5 +11,5 @@ export const configs = {
 }
 
 export const BASE_URL = domain;
-export const GAME_SERVER = configs.ports.gameNodeApp;
+export const GAME_SERVER = `${domain}:8001`;
 export const CONNECTION_TIMEOUT = 360000;
