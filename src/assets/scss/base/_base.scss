@@ -2,7 +2,8 @@ html {
   min-height: 100vh;
 }
 
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -14,7 +15,8 @@ body, html {
   overflow: hidden;
 }
 
-ul, li {
+ul,
+li {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -32,18 +34,14 @@ a {
 .content-wrapper {
   display: flex;
   height: 100%;
-}
-
-.right_panel {
-  min-width: 232px;
-  width: 20%;
-  height: 100%;
+  background: $color-bg;
 }
 
 .active {
   display: flex;
-  height: calc(20% - 30px);
+  height: calc(15% - 30px);
   align-items: flex-end;
   justify-content: flex-end;
   padding: 5px;
+  user-select: none;
 }

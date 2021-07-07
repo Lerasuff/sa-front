@@ -16,12 +16,12 @@
     height: 100vh;
     align-items: center;
     justify-content: center;
-    background-color: $color-main;
+    background-color: $color-bg;
   }
 
   &__title {
     margin: 12px 0 20px;
-    font-size: 18px;
+    font-size: $fs-middle;
     letter-spacing: 1px;
     font-family: $ft-main;
   }

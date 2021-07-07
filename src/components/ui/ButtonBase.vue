@@ -1,52 +1,59 @@
 <template>
-  <button class="main-btn"
-          :type="buttonType"
-          :class="{'main-btn--disabled': this.isButtonDisabled}"
-          :name="buttonName"
-          :disabled="isButtonDisabled"
-          @click.prevent="clickEvent"
-  >
-    {{buttonValue}}
+  <button class="main-btn" :type="buttonType" :class="[{ 'main-btn--disabled': this.isButtonDisabled }, buttonType === ButtonTypes.btnSubmit ? 'main-btn--submit' : '', buttonClass]" :name="buttonName" :disabled="isButtonDisabled" @click.prevent="clickEvent">
+    {{ buttonValue }}
   </button>
 </template>
 
 <script lang="ts">
-import Vue, {PropType} from 'vue'
+import Vue, { PropType } from 'vue';
 
-enum ButtonTypes {
+export enum ButtonTypes {
   btnSubmit = 'submit',
   btnButton = 'button',
-  btnReset = 'reset'
+  btnReset = 'reset',
+}
+
+interface Data {
+  ButtonTypes;
 }
 
 export default Vue.extend({
-  name: "ButtonBase",
+  name: 'ButtonBase',
+  data(): Data {
+    return {
+      ButtonTypes,
+    };
+  },
   props: {
     buttonValue: {
       type: String,
-      default: ''
+      default: '',
     },
     buttonName: {
       type: String,
-      default: ''
+      default: '',
     },
     buttonWidth: {
       type: String,
-      default: ''
+      default: '',
     },
     isButtonDisabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     buttonType: {
       type: String as PropType<ButtonTypes>,
-      default: ButtonTypes.btnButton
-    }
+      default: ButtonTypes.btnButton,
+    },
+    buttonClass: {
+      type: String,
+      default: '',
+    },
   },
   methods: {
     clickEvent(): void {
       this.$emit('onClick');
-    }
+    },
   },
-})
+});
 </script>

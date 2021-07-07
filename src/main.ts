@@ -1,34 +1,33 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import Toast from "vue-toastification";
-import "vue-toastification/dist/index.css";
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store';
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 
 const optionsToast = {
-  transition: "Vue-Toastification__bounce",
+  transition: 'Vue-Toastification__bounce',
   maxToasts: 20,
   newestOnTop: true,
-  position: "top-right",
+  position: 'top-right',
   timeout: 5000,
-  closeOnClick: false,
+  closeOnClick: true,
   pauseOnFocusLoss: false,
   pauseOnHover: true,
-  draggable: false,
+  draggable: true,
   showCloseButtonOnHover: false,
   hideProgressBar: true,
-  closeButton: "button",
+  closeButton: 'button',
   icon: true,
-  rtl: false
-}
+  rtl: false,
+};
 
 Vue.use(Toast, optionsToast);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   router,
   store,
-  render: h => h(App)
-}).$mount('#app')
-
+  render: (h) => h(App),
+}).$mount('#app');

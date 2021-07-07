@@ -1,11 +1,11 @@
 export function requireField(value: string | undefined | null): null | 'Обязательное поле' {
-    if (typeof value === "string") {
-        value = value.trim();
-    }
+  if (typeof value === 'string') {
+    value = value.trim();
+  }
 
-    if (['', null, undefined].indexOf(value) !== -1) {
-        return 'Обязательное поле'
-    }
+  if (['', null, undefined].indexOf(value) !== -1) {
+    return 'Обязательное поле';
+  }
 
-    return null;
+  return null;
 }

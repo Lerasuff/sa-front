@@ -1,8 +1,7 @@
-import Vue from 'vue'
-import Vuex, {StoreOptions} from 'vuex'
+import Vue from 'vue';
+import Vuex, { StoreOptions } from 'vuex';
 
-Vue.use(Vuex)
-
+Vue.use(Vuex);
 
 const options: StoreOptions<Record<string, unknown>> = {
   strict: process.env.NODE_ENV !== 'production',

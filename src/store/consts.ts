@@ -14,25 +14,31 @@ export enum Actions {
   A_LOGOUT = 'A_LOGOUT',
   A_USER_CREATE = 'A_USER_CREATE',
   A_USER_UPDATE = 'A_USER_UPDATE',
-  A_USER_DELETE = 'A_USER_DELETE'
+  A_USER_DELETE = 'A_USER_DELETE',
 }
 
 export enum Mutations {
   SET_LOADING = 'SET_LOADING',
-  SET_AUTH = "SET_AUTH",
+  SET_AUTH = 'SET_AUTH',
   SET_LOGOUT = 'SET_LOGOUT',
   SET_HTTP_ERROR = 'SET_HTTP_ERROR',
   SET_USERS = 'SET_USERS',
   SET_BOARD = 'SET_BOARD',
   SET_DECK = 'SET_DECK',
-  SET_UPDATE = 'SET_UPDATE',
   SET_FINISH = 'SET_FINISH',
+  ADD_IN_DECK = 'ADD_IN_DECK',
+  ADD_IN_BOARD = 'ADD_IN_BOARD',
+  DELETE_FROM_DECK = 'DELETE_FROM_DECK',
+  DELETE_FROM_BOARD = 'DELETE_FROM_BOARD',
+  SET_TIME = 'SET_TIME',
+  SET_HEALTH = 'SET_HEALTH',
+  CLEAR_STATE = 'CLEAR_STATE',
 }
 
 export enum Getters {
   GET_LOADING = 'GET_LOADING',
   IS_LOADING = 'IS_LOADING',
-  GET_USERS = 'GET_USERS'
+  GET_USERS = 'GET_USERS',
 }
 
 export const urls = {
@@ -42,4 +48,4 @@ export const urls = {
   [Actions.A_USER_CREATE]: '',
   [Actions.A_USER_UPDATE]: '',
   [Actions.A_USER_DELETE]: ':id:',
-}
+};

@@ -1,9 +1,9 @@
-import {Connection} from "@/store/modules/socket.ts";
-import {StateModel} from "@/contracts/StateModel.ts";
-import {StepModel} from "@/contracts/StepModel.ts";
+import { Connection } from '@/store/modules/socket.ts';
+import { StateModel } from '@/contracts/StateModel.ts';
 import Vue from 'vue';
-import {BoardModules} from "@/store/modules/board.modules.ts"
-import { ModuleInstance} from "vuexok";
+import { BoardModules } from '@/store/modules/board.modules.ts';
+import { ModuleInstance } from 'vuexok';
+import { movingCards } from '@/mixins/Draggable.vue';
 
 export class ConnectionInstance extends Connection {
   scene: ModuleInstance<BoardModules>;
@@ -24,35 +24,24 @@ export class ConnectionInstance extends Connection {
 
     board.enemyBoard.cards = board.enemyBoard.cards.slice().reverse();
 
-    this.scene.mutations.SET_DECK({cards: board.deck, drag: true});
-    this.scene.mutations.SET_BOARD({name: 'playerBoard', cards: board.playerBoard, drag: true});
-    this.scene.mutations.SET_BOARD({name: 'enemyBoard', cards: board.enemyBoard, drag: false});
-
-    setTimeout(() => {
-      if (!this.scene.getters.gameFinished) {
-        for (let i = 0; i < board.playerBoard.lines; i++) {
-          for (let j = 0; j < board.playerBoard.columns; j++) {
-            if (null === board.playerBoard.cards[i][j]) {
-              const card = board.deck.pop();
-              if (card)
-                this.sendBoardUpdate(i, j, card.num);
-            }
-          }
-        }
-        this.sendBoardReady();
-      }
-    }, 10000);
+    this.scene.mutations.SET_HEALTH({ enemyHealth: board.enemyHealth, playerHealth: board.playerHealth });
+    this.scene.mutations.SET_DECK({ cards: board.deck });
+    this.scene.mutations.SET_BOARD({ name: 'playerBoard', cards: board.playerBoard, drag: false });
+    this.scene.mutations.SET_BOARD({ name: 'enemyBoard', cards: board.enemyBoard, drag: false });
   }
   timeSync(timeLeft: number): void {
-    //Vue.$toast.info(`TIME LEFT: ${timeLeft}`);
+    this.scene.mutations.SET_TIME(timeLeft);
   }
-  steps(steps: StepModel[]): void {
-    //Vue.$toast.info('REPLY STEPS');
+  badMove(moveId: number): void {
+    Vue.$toast.error(`BAD MOVE: ${moveId}`);
+    const movement = movingCards.find((move) => move.id === moveId);
+    if (movement) {
+      Vue.$toast.error(`Нельзя переместить карту: ${movement}`);
+    }
   }
-  complete(winnerId: string): void {
-    Vue.$toast.success(`WINNER: ${winnerId}`);
-    //this.scene.gameFinished = true;
-    this.scene.mutations.SET_FINISH(true);
+  complete(winner: boolean): void {
+    this.scene.mutations.SET_FINISH({ finish: true, update: true, win: winner });
+    this.scene.mutations.SET_TIME(0);
     this.disconnect();
   }
 
@@ -61,6 +50,7 @@ export class ConnectionInstance extends Connection {
   }
 
   disconnected(): void {
+    this.scene.mutations.SET_DECK({ cards: this.scene.state.deck, drag: false });
     Vue.$toast.info('Disconnected');
   }
 }

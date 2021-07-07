@@ -5,4 +5,4 @@ export default {
   $lt: '<',
   $lte: '<:',
   $ne: '!',
-}
+};

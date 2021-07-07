@@ -1,11 +1,13 @@
 export class BoardUpdateModel {
-    public readonly line: number;
-    public readonly pos: number;
-    public readonly cardId: number;
+  public readonly moveId: number;
+  public readonly line: number;
+  public readonly pos: number;
+  public readonly cardId: number;
 
-    constructor(line: number, pos: number, cardId: number) {
-        this.line = line;
-        this.pos = pos;
-        this.cardId = cardId;
-    }
+  constructor(moveId: number, line: number, pos: number, cardId: number) {
+    this.moveId = moveId;
+    this.line = line;
+    this.pos = pos;
+    this.cardId = cardId;
+  }
 }

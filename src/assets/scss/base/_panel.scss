@@ -1,0 +1,28 @@
+.right_panel {
+  min-width: 232px;
+  width: 20%;
+  height: 100%;
+  background: $white;
+  border-radius: 5px;
+}
+
+.clock {
+  &-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 20px 20px;
+    color: $color-active;
+    font-size: $fs-middle;
+    align-items: center;
+  }
+
+  &__title {
+    margin-right: 10px;
+  }
+
+  &-inner {
+    border: 2px solid $color-active;
+    border-radius: 5px;
+    padding: 5px;
+  }
+}

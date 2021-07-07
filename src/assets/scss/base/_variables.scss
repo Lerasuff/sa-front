@@ -1,23 +1,22 @@
 //fonts
-$ft-main: 'Montserrat-Regular', sans-serif;
-$ft-medium: 'Montserrat-Medium', sans-serif;
-$ft-bold: 'Montserrat-Bold', sans-serif;
+$ft-main: 'Gill Sans Nova';
+$ft-title: 'Gill Sans Nova Cond';
 
 //font-size
 $fs-large: 30px;
 $fs-middle: 24px;
-$fs-normal: 16px;
-$fs-small: 15px;
+$fs-normal: 18px;
 $fs-little: 14px;
 $fs-mini: 13px;
 
 //colors
 $white: #ffffff;
-$color-main: #e1dfff;
+$color-main: #626f7b; //#e1dfff;
 $color-text: #222222;
+$color-bg: #2c3e50;
 $color-error: #f56c6c;
 $color-card-background: #d4d4d4;
-$color-active: #5e5b89; //#6056f1;
-$color-active-lighten:  lighten($color-active, 15%);
+$color-active: #560000; //#5e5b89;
+$color-active-lighten: lighten($color-active, 15%);
 $color-active-darken: darken($color-active, 6%);
-$color-btn-disabled: #c1d7de;
+$color-btn-disabled: #bdbdbd;

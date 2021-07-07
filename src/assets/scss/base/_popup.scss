@@ -1,0 +1,53 @@
+.popup {
+  top: 50%;
+  transform: translate(0, -50%);
+  margin: 0 auto;
+  box-shadow: 0px 5px 20px;
+  padding: 50px 50px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  position: relative;
+
+  &-layout {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 80%;
+    justify-content: center;
+    align-items: flex-start;
+    backdrop-filter: blur(4px);
+    z-index: 100;
+  }
+
+  &__message {
+    color: $white;
+    font-size: 70px;
+    text-align: center;
+  }
+
+  &-fail {
+    background: #ff000073;
+  }
+
+  &-win {
+    background: #00ff4e73;
+  }
+
+  &-info {
+    background: #ffffff73;
+
+    .popup__message {
+      color: $color-text;
+    }
+  }
+
+  &__buttons {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+    user-select: none;
+    margin-left: 47px;
+  }
+}

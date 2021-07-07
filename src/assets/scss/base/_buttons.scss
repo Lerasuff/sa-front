@@ -5,22 +5,33 @@
   width: 100px;
   height: 40px;
   border-radius: 5px;
-  background: $color-active;
-  color: $white;
+  background: $white;
+  color: $color-text;
   font-family: $ft-main;
   font-size: $fs-little;
   text-transform: uppercase;
   padding: 11px 20px;
   cursor: pointer;
-  border: none;
+  border: 1px solid $color-main;
   outline: none;
 
   &:hover {
-    background: $color-active-lighten;
+    background: darken($white, 6%);
+  }
+
+  &--submit {
+    background: $color-active;
+    color: $white;
+    border-color: $color-active;
+
+    &:hover {
+      background: $color-active-lighten;
+    }
   }
 
   &--disabled {
     cursor: default;
+    border-color: $color-btn-disabled;
     background: $color-btn-disabled;
 
     &:hover,
