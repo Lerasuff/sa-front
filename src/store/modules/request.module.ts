@@ -39,10 +39,9 @@ const api = axios.create({
 const notificationErrors = <T extends Errors>(error: T, status: number | undefined): void => {
   if (!error) return;
 
-  const isMessage: string | undefined = Object.keys(error).find((key) => key === 'message');
   let message: string | undefined;
 
-  if (isMessage) {
+  if (error.message) {
     message = error.message;
   } else {
     message = error.error_description;

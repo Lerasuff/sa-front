@@ -1,16 +1,14 @@
 <template>
   <div class="popup-layout">
     <div class="popup" :class="popupClass">
+      <p class="popup__title">{{ popupTitle }}</p>
       <p class="popup__message">{{ popupMessage }}</p>
-      <div class="popup__buttons">
-        <!--      <button-base :button-value="btnOk"
-                   button-class="popup-button&#45;&#45;submit"
-                   :button-type="ButtonTypes.btnSubmit"
-      />
-      <button-base :button-value="btnCancel"
-                   button-class="popup-button&#45;&#45;cancel"
-                   :button-type="ButtonTypes.btnButton"
-      />-->
+      <div class="container__dots" v-if="popupClass === PopupClasses.info">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+        <div class="circle circle-4"></div>
+        <div class="circle circle-5"></div>
       </div>
     </div>
   </div>
@@ -27,7 +25,16 @@ export enum PopupClasses {
 
 export default Vue.extend({
   name: 'Popup',
+  data() {
+    return {
+      PopupClasses,
+    };
+  },
   props: {
+    popupTitle: {
+      type: String,
+      default: '',
+    },
     popupMessage: {
       type: String,
       default: '',

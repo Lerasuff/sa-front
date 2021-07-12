@@ -1,6 +1,6 @@
 <template>
   <div class="scene">
-    <div class="boards board-scene" v-for="field in fields" :key="field.id" :class="field.name" @dragenter.prevent>
+    <div class="board scene-board" v-for="field in fields" :key="field.id" :class="field.name" @dragenter.prevent>
       <div class="board__header health">
         <span class="health-player">{{ field.health }}</span>
       </div>

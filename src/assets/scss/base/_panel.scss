@@ -1,6 +1,7 @@
 .right_panel {
-  min-width: 232px;
-  width: 20%;
+  min-width: 222px;
+  min-height: 628px;
+  width: 30%;
   height: 100%;
   background: $white;
   border-radius: 5px;
@@ -14,6 +15,10 @@
     color: $color-active;
     font-size: $fs-middle;
     align-items: center;
+
+    @media screen and (min-width: $win-width-hg) {
+      font-size: 30px;
+    }
   }
 
   &__title {
@@ -25,4 +30,43 @@
     border-radius: 5px;
     padding: 5px;
   }
+}
+
+@keyframes clock {
+  from {
+    background-color: $white;
+    color: $color-active;
+  }
+  to {
+    background-color: $color-active;
+    color: $white;
+  }
+}
+
+.deck_card {
+  display: flex;
+  flex-direction: column;
+  flex-flow: wrap;
+  justify-content: space-evenly;
+  width: auto;
+  height: calc(100% - 195px);
+  margin: 10px 15px;
+  box-shadow: 0 1px 3px $color-bg;
+  //box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.24);
+  overflow-y: auto;
+  border-radius: 5px;
+  user-select: none;
+
+  .card-container {
+    margin: 5px;
+  }
+}
+
+.active {
+  display: flex;
+  height: 100px;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 5px;
+  user-select: none;
 }

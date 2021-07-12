@@ -2,7 +2,7 @@
   <div class="content-wrapper">
     <PlayingField ref="PlayingField" @updated="updatePage" />
     <RightPanel @updated="updatePage" />
-    <Popup v-if="showPopup" :popup-message="resultGame.message" :popup-class="resultGame.class" />
+    <Popup v-if="showPopup" :popup-title="resultGame.title" :popup-message="resultGame.message" :popup-class="resultGame.class" />
   </div>
 </template>
 
@@ -13,13 +13,14 @@ import RightPanel from '@/components/RightPanel.vue';
 import Popup, { PopupClasses } from '@/components/ui/Popup.vue';
 import { ConnectionInstance } from '@/store/modules/board.ts';
 import authModule from '@/store/modules/auth.module';
-import boardStateModule from '@/store/modules/board.modules';
+import boardStateModule, { GameStatus } from '@/store/modules/board.modules';
 
 export let connection: ConnectionInstance;
 
 interface ResultPopup {
   class: PopupClasses;
-  message: string;
+  title: string;
+  message?: string;
 }
 
 export default Vue.extend({
@@ -30,21 +31,32 @@ export default Vue.extend({
     Popup,
   },
   computed: {
-    resultGame(): ResultPopup {
+    resultGame(): ResultPopup | null {
+      if (connection.scene.state.gameStatus === GameStatus.Wait) {
+        return {
+          class: PopupClasses.info,
+          title: 'Подождите',
+          message: 'Идет поиск соперника',
+        };
+      }
+
+      if (connection.scene.state.isWinner === undefined)
+        return null;
+
       if (connection.scene.state.isWinner) {
         return {
           class: PopupClasses.win,
-          message: 'Вы победили!',
+          title: 'Вы победили!',
         };
       } else {
         return {
           class: PopupClasses.fail,
-          message: 'Вы проиграли!',
+          title: 'Вы проиграли!',
         };
       }
     },
     showPopup(): boolean {
-      return !!connection && connection.scene.state.gameFinished && connection.scene.state.needUpdate;
+      return !!connection && (connection.scene.state.gameStatus === GameStatus.Wait || connection.scene.state.isWinner !== undefined);
     },
   },
   methods: {

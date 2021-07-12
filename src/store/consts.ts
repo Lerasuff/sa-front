@@ -25,7 +25,8 @@ export enum Mutations {
   SET_USERS = 'SET_USERS',
   SET_BOARD = 'SET_BOARD',
   SET_DECK = 'SET_DECK',
-  SET_FINISH = 'SET_FINISH',
+  SET_STATUS = 'SET_STATUS',
+  SET_WIN = 'SET_WIN',
   ADD_IN_DECK = 'ADD_IN_DECK',
   ADD_IN_BOARD = 'ADD_IN_BOARD',
   DELETE_FROM_DECK = 'DELETE_FROM_DECK',
@@ -38,7 +39,6 @@ export enum Mutations {
 export enum Getters {
   GET_LOADING = 'GET_LOADING',
   IS_LOADING = 'IS_LOADING',
-  GET_USERS = 'GET_USERS',
 }
 
 export const urls = {

@@ -3,7 +3,6 @@ import { CardModel, CardModelDrag } from '@/contracts/CardModel.ts';
 import { createModule, ModuleInstance } from 'vuexok';
 import store from '@/store';
 import { Mutations } from '@/store/consts.ts';
-import moment from 'moment';
 
 const emptyBoard = (line, col) => {
   const result: null[][] = [];
@@ -17,29 +16,44 @@ const emptyBoard = (line, col) => {
   return result;
 };
 
+export enum GameStatus {
+  Connect = 'connect',
+  Wait = 'waiting for an opponent',
+  WaitMove = 'waiting for the opponent\'s move',
+  Ready = 'ready',
+  Finish = 'finish',
+  Disconnect = 'disconnect',
+  Error = 'error',
+}
+
+export enum NameBoard {
+  Player = 'playerBoard',
+  Enemy = 'enemyBoard'
+}
+
 export class BoardState {
   playerBoard: BoardModelDrag = new BoardModelDrag(new BoardModel(2, 8, emptyBoard(2, 8)), true);
   enemyBoard: BoardModelDrag = new BoardModelDrag(new BoardModel(2, 8, emptyBoard(2, 8)), false);
   deck: CardModelDrag[] = [];
   enemyHealth = 0;
   playerHealth = 0;
-  needUpdate = false;
-  gameFinished = false;
-  isWinner = false;
-  timeSync = '00:00';
+  gameStatus: GameStatus = GameStatus.Disconnect;
+  isWinner: boolean | undefined;
+  timeSync = 0;
 }
 
 export interface BoardModules {
   namespaced: true;
   state: BoardState;
   mutations: {
-    [Mutations.SET_BOARD](state: BoardState, payload: { name: string; cards: BoardModel; drag: boolean });
+    [Mutations.SET_BOARD](state: BoardState, payload: { name: NameBoard; cards?: BoardModel; drag: boolean });
     [Mutations.ADD_IN_BOARD](state: BoardState, payload: { line: number; col: number; card: CardModelDrag });
     [Mutations.DELETE_FROM_BOARD](state: BoardState, payload: { line: number; col: number });
-    [Mutations.SET_DECK](state: BoardState, payload: { cards: CardModel[]; drag?: boolean });
+    [Mutations.SET_DECK](state: BoardState, payload: { cards?: CardModel[]; drag?: boolean });
     [Mutations.ADD_IN_DECK](state: BoardState, card: CardModelDrag);
     [Mutations.DELETE_FROM_DECK](state: BoardState, pos: number);
-    [Mutations.SET_FINISH](state: BoardState, payload: { finish: boolean; update: boolean; win: boolean });
+    [Mutations.SET_STATUS](state: BoardState, status: GameStatus);
+    [Mutations.SET_WIN](state: BoardState, win: boolean);
     [Mutations.SET_TIME](state: BoardState, time: number);
     [Mutations.SET_HEALTH](state: BoardState, payload: { enemyHealth: number; playerHealth: number });
     [Mutations.CLEAR_STATE](state: BoardState);
@@ -51,7 +65,15 @@ const boardStateModule: ModuleInstance<BoardModules> = createModule(store, 'play
   state: new BoardState(),
   mutations: {
     [Mutations.SET_BOARD](state, { name, cards, drag }) {
-      state[name] = new BoardModelDrag(cards, drag);
+      if (!cards) {
+        state[name].cards.forEach(line => {
+          line.forEach(col => {
+            if (col) col.draggable = drag;
+          })
+        });
+      } else {
+        state[name] = new BoardModelDrag(cards, drag);
+      }
     },
     [Mutations.ADD_IN_BOARD](state, { line, col, card }) {
       state.playerBoard.cards[line][col] = card;
@@ -61,11 +83,14 @@ const boardStateModule: ModuleInstance<BoardModules> = createModule(store, 'play
     },
     [Mutations.SET_DECK](state, { cards, drag }) {
       const deck: CardModelDrag[] = [];
-      cards.forEach((card) => {
-        if (drag === undefined) drag = true;
-        deck.push(new CardModelDrag(card, drag));
-      });
-      state.deck = deck;
+      if (!cards) {
+        cards = state.deck;
+      }
+        cards.forEach((card) => {
+          if (drag === undefined) drag = true;
+          deck.push(new CardModelDrag(card, drag));
+        });
+        state.deck = deck;
     },
     [Mutations.ADD_IN_DECK](state, card) {
       if (card.num < state.deck[0].num) {
@@ -83,13 +108,14 @@ const boardStateModule: ModuleInstance<BoardModules> = createModule(store, 'play
     [Mutations.DELETE_FROM_DECK](state, pos) {
       state.deck.splice(pos, 1);
     },
-    [Mutations.SET_FINISH](state, { finish, update, win }) {
-      state.gameFinished = finish;
-      state.needUpdate = update;
+    [Mutations.SET_STATUS](state, status) {
+      state.gameStatus = status;
+    },
+    [Mutations.SET_WIN](state: BoardState, win: boolean) {
       state.isWinner = win;
     },
     [Mutations.SET_TIME](state: BoardState, time: number) {
-      state.timeSync = moment.utc(time).format('mm:ss');
+      state.timeSync = time;
     },
     [Mutations.SET_HEALTH](state: BoardState, { enemyHealth, playerHealth }) {
       state.enemyHealth = enemyHealth;
@@ -101,9 +127,9 @@ const boardStateModule: ModuleInstance<BoardModules> = createModule(store, 'play
       state.deck = [];
       state.enemyHealth = 0;
       state.playerHealth = 0;
-      state.needUpdate = false;
-      state.gameFinished = true;
-      state.timeSync = '00:00';
+      state.gameStatus = GameStatus.Disconnect;
+      state.isWinner = undefined;
+      state.timeSync = 0;
     },
   },
 });

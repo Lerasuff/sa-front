@@ -17,7 +17,7 @@
 import Vue from 'vue';
 import ButtonBase, { ButtonTypes } from '@/components/ui/ButtonBase.vue';
 import FieldBase from '@/components/ui/FieldBase.vue';
-import authModule from '@/store/modules/auth.module';
+import authModule from '@/store/modules/auth.module.ts';
 import { InputTypes } from '@/components/ui/FieldBase.vue';
 
 interface Data {
@@ -29,8 +29,6 @@ interface Data {
   InputTypes;
   ButtonTypes;
 }
-
-const { A_AUTH } = authModule.actions;
 
 export default Vue.extend({
   name: 'Login',
@@ -48,7 +46,7 @@ export default Vue.extend({
   },
   methods: {
     onsubmit(): void {
-      A_AUTH(this.user).then(() => {
+      authModule.actions.A_AUTH(this.user).then(() => {
         this.$router.push('/');
       });
     },

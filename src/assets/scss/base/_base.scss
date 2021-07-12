@@ -27,6 +27,10 @@ a {
   color: $color-text;
 }
 
+p {
+  margin: 20px 0;
+}
+
 #app {
   height: 100%;
 }
@@ -35,13 +39,4 @@ a {
   display: flex;
   height: 100%;
   background: $color-bg;
-}
-
-.active {
-  display: flex;
-  height: calc(15% - 30px);
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 5px;
-  user-select: none;
 }

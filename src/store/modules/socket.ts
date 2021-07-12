@@ -10,40 +10,45 @@ export abstract class Connection {
 
   constructor(accessToken: string) {
     this.accessToken = accessToken;
-    this.socket = io(GAME_SERVER, { autoConnect: false, reconnection: true, query: { token: this.accessToken }, timeout: CONNECTION_TIMEOUT });
+    this.socket = io(GAME_SERVER, {
+      autoConnect: false,
+      reconnection: true,
+      query: {token: this.accessToken},
+      timeout: CONNECTION_TIMEOUT
+    });
     this.socket
-      .on('connect', () => {
-        console.log('Connected');
-        this.connected();
-      })
-      .on('disconnect', () => {
-        console.log('Disconnected');
-        this.disconnected();
-      })
-      .on('connect_error', (e: any) => {
-        console.log('ERROR', e);
-        this.error(e);
-      })
-      .on(AppMessage.Wait, () => {
-        console.log('WAIT');
-        this.wait();
-      })
-      .on(AppMessage.Ready, (board: StateModel) => {
-        console.log('READY', board);
-        this.ready(board);
-      })
-      .on(AppMessage.TimeSync, (timeLeft: { tick: number }) => {
-        console.log('TIME LEFT', timeLeft);
-        this.timeSync(timeLeft.tick);
-      })
-      .on(AppMessage.BadMove, (moveId: number) => {
-        console.log('BAD MOVE', moveId);
-        this.badMove(moveId);
-      })
-      .on(AppMessage.Complete, (winner: boolean) => {
-        console.log(`WINNER: ${winner}`);
-        this.complete(winner);
-      });
+        .on('connect', () => {
+          console.log('Connected');
+          this.connected();
+        })
+        .on('disconnect', () => {
+          console.log('Disconnected');
+          this.disconnected();
+        })
+        .on('connect_error', (e: any) => {
+          console.log('ERROR', e);
+          this.error(e);
+        })
+        .on(AppMessage.Wait, () => {
+          console.log('WAIT');
+          this.wait();
+        })
+        .on(AppMessage.Ready, (board: StateModel) => {
+          console.log('READY', board);
+          this.ready(board);
+        })
+        .on(AppMessage.TimeSync, (timeLeft: { tick: number }) => {
+          console.log('TIME LEFT', timeLeft);
+          this.timeSync(timeLeft.tick);
+        })
+        .on(AppMessage.BadMove, (moveId: number) => {
+          console.log('BAD MOVE', moveId);
+          this.badMove(moveId);
+        })
+        .on(AppMessage.Complete, (winner: boolean) => {
+          console.log(`WINNER: ${winner}`);
+          this.complete(winner);
+        });
   }
 
   /**

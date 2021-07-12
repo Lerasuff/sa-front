@@ -3,20 +3,55 @@ $ft-main: 'Gill Sans Nova';
 $ft-title: 'Gill Sans Nova Cond';
 
 //font-size
-$fs-large: 30px;
+$fs-large: 70px;
+$fs-great: 50px;
 $fs-middle: 24px;
 $fs-normal: 18px;
 $fs-little: 14px;
 $fs-mini: 13px;
 
+$circle-size: 20px;
+$circle-margin: 7px;
+
 //colors
 $white: #ffffff;
-$color-main: #626f7b; //#e1dfff;
+$color-main: #626f7b;
 $color-text: #222222;
 $color-bg: #2c3e50;
+$color-bg-fail: #ff000073;
+$color-bg-win: #00ff4e73;
+$color-bg-info: #ffffffd1;
 $color-error: #f56c6c;
 $color-card-background: #d4d4d4;
-$color-active: #560000; //#5e5b89;
+$color-active: #560000;
 $color-active-lighten: lighten($color-active, 15%);
 $color-active-darken: darken($color-active, 6%);
 $color-btn-disabled: #bdbdbd;
+$color-wait: #dd4646, #c31414, #aa0606, #790707, $color-active;
+
+//windows-width
+$win-width-gg: 2250px !default;
+$win-width-hg: 2000px !default;
+$win-width-lg: 1840px !default;
+$win-width-md: 1550px !default;
+$win-width-sm: 1300px !default;
+$win-width-xs: 1110px !default;
+
+//windows-height
+$win-height-gg: 730px !default;
+$win-height-hg: 630px !default;
+
+//card-width
+$cw-gg: 140px;
+$cw-hg: 120px;
+$cw-lg: 100px;
+$cw-md: 80px;
+$cw-sm: 75px;
+
+//card-height
+$ch-gg: 190px;
+$ch-hg: 170px;
+$ch-lg: 150px;
+$ch-md: 130px;
+$ch-sm: 115px;
+$ch-xs: 105px;

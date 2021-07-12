@@ -1,0 +1,187 @@
+.scene {
+  height: 100%;
+  width: 70%;
+  min-width: 890px;
+  min-height: 628px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  &-board {
+    display: block;
+    padding: 15px;
+
+    @media screen and (max-height: $win-height-gg) {
+      padding: 10px 15px;
+    }
+  }
+}
+
+.board {
+  &__header {
+    display: flex;
+    justify-content: center;
+    height: 30px;
+    line-height: 30px;
+    font-size: $fs-middle;
+    text-transform: uppercase;
+    color: white;
+    font-family: $ft-main;
+    margin-bottom: 10px;
+
+    @media screen and (min-width: $win-width-hg) {
+      font-size: 30px;
+    }
+
+    @media screen and (max-width: $win-width-md) {
+      height: 20px;
+      line-height: 20px;
+      font-size: $fs-middle;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.card {
+  &-container {
+    width: $cw-hg;
+    height: $ch-hg;
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.24);
+
+    @media screen and (min-width: $win-width-gg) {
+      width: $cw-gg;
+      height: $ch-gg;
+    }
+
+    @media screen and (max-width: $win-width-lg) {
+      width: $cw-lg;
+      height: $ch-lg;;
+    }
+
+    @media screen and (max-width: $win-width-md) {
+      width: $cw-md;
+      height: $ch-md;
+
+      @media screen and (max-height: $win-height-gg){
+        height: $ch-xs;
+      }
+    }
+
+    @media screen and (max-width: $win-width-sm) {
+      width: $cw-sm;
+      height: $ch-sm;
+
+      @media screen and (max-height: $win-height-gg) {
+        height: $ch-xs;
+      }
+    }
+  }
+
+  &__info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-transform: uppercase;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    justify-content: space-evenly;
+
+    .info {
+      margin-right: 2px;
+      font-size: $fs-normal;
+
+      @media screen and (min-width: $win-width-gg) {
+        font-size: 21px;
+      }
+
+      @media screen and (max-width: $win-width-md) {
+        font-size: $fs-little;
+      }
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+
+  &__img {
+    width: 100%;
+    height: 80%;
+  }
+}
+
+.battlefield {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 100%;
+  user-select: none;
+  margin-bottom: 15px;
+
+  @media screen and (min-width: $win-width-hg) {
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+
+  @media screen and (max-width: $win-width-md) {
+    margin-bottom: 10px;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.field-container {
+  width: $cw-hg + 10px;
+  height: $ch-hg + 10px;
+  background: repeating-linear-gradient(45deg, $white, transparent 100px);
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  box-shadow: 0 4px 8px $white;
+
+  @media screen and (min-width: $win-width-gg) {
+    width: $cw-gg + 10px;
+    height: $ch-gg + 10px;
+  }
+
+  @media screen and (min-width: $win-width-hg) {
+    margin-right: 30px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  @media screen and (max-width: $win-width-lg) {
+    width: $cw-lg + 10px;
+    height: $ch-lg + 10px;
+  }
+
+  @media screen and (max-width: $win-width-md) {
+    width: $cw-md + 10px;
+    height: $ch-md + 10px;
+
+    @media screen and (max-height: $win-height-gg){
+      height: $ch-xs + 10px;
+    }
+  }
+
+  @media screen and (max-width: $win-width-sm) {
+    width: $cw-sm + 10px;
+    height: $ch-sm + 10px;
+
+    @media screen and (max-height: $win-height-gg){
+      height: $ch-xs + 10px;
+    }
+  }
+}

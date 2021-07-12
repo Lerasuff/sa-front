@@ -4,6 +4,8 @@ import router from './router';
 import store from './store';
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 const optionsToast = {
   transition: 'Vue-Toastification__bounce',
@@ -23,6 +25,8 @@ const optionsToast = {
 };
 
 Vue.use(Toast, optionsToast);
+Vue.use(Loading);
+Vue.component('loading', Loading);
 
 Vue.config.productionTip = false;
 
